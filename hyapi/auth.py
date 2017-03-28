@@ -3,7 +3,7 @@
 import urllib
 
 import requests
-from error import HYAuthError
+from hyapi.error import HYAuthError
 
 
 class HYAuthHandler(object):
@@ -11,13 +11,13 @@ class HYAuthHandler(object):
     OAUTH_HOST = 'api.hanyang.ac.kr'
     OAUTH_ROOT = '/oauth/'
 
-    def __init__(self, client_id, client_secret, scope=None, callback=None):
+    def __init__(self, client_id, client_secret, scope=None, redirect_uri=None):
         self.client_id = client_id
         self.client_secret = client_secret
         self.scope = scope
         self.code = None
         self.access_token = None
-        self.callback = callback
+        self.redirect_uri = redirect_uri
 
     def _get_oauth_url(self, endpoint):
         return 'https://' + self.OAUTH_HOST + self.OAUTH_ROOT + endpoint
@@ -32,7 +32,7 @@ class HYAuthHandler(object):
         params = {
             'client_id': self.client_id,
             'response_type': 'code',
-            'redirect_uri': self.callback,
+            'redirect_uri': self.redirect_uri,
             'scope': self.scope
         }
 
@@ -48,7 +48,7 @@ class HYAuthHandler(object):
             'client_secret': self.client_secret,
             'code': self.code,
             'scope': self.scope,
-            'redirect_uri': self.callback,
+            'redirect_uri': self.redirect_uri,
             'grant_type': 'authorization_code'
         }
         r = requests.get(url, params=params)

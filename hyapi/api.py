@@ -6,7 +6,7 @@ import urllib
 import binascii
 import requests
 from Crypto.Cipher import AES
-from error import HYAuthError
+from hyapi.error import HYAuthError
 from pkcs7 import PKCS7Encoder
 
 
